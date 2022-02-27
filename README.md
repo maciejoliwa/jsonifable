@@ -46,6 +46,7 @@ class Animal:
     species: str
 
 
+# Notice how you're not required to add @Jsonifable decorator if you don't need the class instance to be manually converted using to_json
 @dataclass
 class Address:
 
