@@ -30,6 +30,49 @@ print(jsonified)
 ```
 
 Will result in:
+```{"name": "Avery", "surname": "Oliwa"}```
+
+You can also use it with nested classes!
+```python
+from jsonifable import Jsonifable
+from dataclasses import dataclass
+
+
+@Jsonifable
+@dataclass
+class Animal:
+
+    name: str
+    species: str
+
+
+@dataclass
+class Address:
+
+    street_no: int
+    street_name: str
+    city: str
+
+
+@Jsonifable
+@dataclass
+class Person:
+
+    name: str
+    surname: str
+    address: Address
+    animal: Animal
+
+
+person = Person("Avery", "Oliwa", Address(20, "STREET", "London"), Animal("Guido", "dog"))
+jsonified = person.to_json()
+print(jsonified)
 ```
-{"name": "Avery", "surname": "Oliwa"}
-```
+
+Will result in:
+```{"name": "Avery", "surname": "Oliwa", "address": {"street_no": 20, "street_name": "STREET", "city": "London"}, "animal": {"name": "Guido", "species": "dog"}}```
+
+It's because Jsonifable forces nested classes to be converted to JSON too.
+
+### CAUTION:
+Versions *0.0.1* and *0.0.2* do not work, do not install them, only install the newest version.
