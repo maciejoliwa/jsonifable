@@ -1,8 +1,6 @@
 import typing as tp
 import json
 
-from attr import has
-
 
 T = tp.TypeVar('T')
 
