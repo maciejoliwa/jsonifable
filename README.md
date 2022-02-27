@@ -77,8 +77,3 @@ It's because Jsonifable forces nested classes to be converted to JSON too.
 
 ### CAUTION:
 Versions *0.0.1* and *0.0.2* do not work, do not install them, only install the newest version.
-
-## TODO:
-* Converting dictionaries which key's point at class instances
-Trying to convert a dictionary, that is a property of a class like ```{ "a": Person("avery") }``` **won't** work.
-* Converting nested lists within lists, same for tuples and sets
