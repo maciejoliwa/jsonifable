@@ -33,7 +33,7 @@ def Jsonifable(cls: T) -> T:
                 attr = getattr(self, var)
 
                 if hasattr(attr, 'to_json'):
-                    obj[var] = json.loads(to_json(attr))
+                    obj[var] = json.loads(attr.to_json())
                 elif type(attr) in _CONVERTABLE_TYPES:
                     obj[var] = attr
                 else:
