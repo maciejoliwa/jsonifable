@@ -4,10 +4,11 @@ import json
 
 _T = tp.TypeVar('_T')
 _ITERABLES = [list, tuple, set]
+_BASIC_TYPES = [int, str, float, bool, None]
 
 
 def _to_json(element: _T) -> tp.Dict[str, _T]:
-    if type(element) in [int, str, float, bool]:
+    if type(element) in _BASIC_TYPES:
         return element
     
     elif type(element) == dict:

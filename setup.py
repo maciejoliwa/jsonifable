@@ -1,6 +1,6 @@
 from setuptools import setup
 
-VERSION = '0.0.6'
+VERSION = '0.0.7'
 DESCRIPTION = 'Simple decorator for making classes easily convertable to JSON'
 
 setup(
