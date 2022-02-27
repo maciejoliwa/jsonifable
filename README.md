@@ -80,4 +80,5 @@ Versions *0.0.1* and *0.0.2* do not work, do not install them, only install the 
 
 ## TODO:
 * Converting dictionaries which key's point at class instances
-Trying to convert a dictionary, that is a property of a class like ```{ "a": Person("avery") }``` **won't** work
+Trying to convert a dictionary, that is a property of a class like ```{ "a": Person("avery") }``` **won't** work.
+* Converting nested lists within lists, same for tuples and sets
