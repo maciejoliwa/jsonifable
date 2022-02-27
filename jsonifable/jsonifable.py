@@ -1,10 +1,12 @@
 import typing as tp
 import json
 
+from attr import has
+
 
 T = tp.TypeVar('T')
 
-_CONVERTABLE_TYPES = [dict, str, int, float, bool, tuple, list, set]
+_CONVERTABLE_TYPES = [dict, str, int, float, bool]
 
 def Jsonifable(cls: T) -> T:
     """
@@ -34,6 +36,20 @@ def Jsonifable(cls: T) -> T:
 
                 if hasattr(attr, 'to_json'):
                     obj[var] = json.loads(attr.to_json())
+
+                # If an attr is iterable, go through
+                # Every iterable is converted to list
+                elif type(attr) in [list, tuple, set]:
+                    obj[var] = list(attr)
+
+                    for index, element in enumerate(attr):
+                        if hasattr(element, 'to_json'):
+                            obj[var][index] = json.loads(element.to_json())
+                        elif type(element) in _CONVERTABLE_TYPES:
+                            obj[var][index] = element
+                        else:
+                            obj[var][index] = json.loads(to_json(element))
+
                 elif type(attr) in _CONVERTABLE_TYPES:
                     obj[var] = attr
                 else:
