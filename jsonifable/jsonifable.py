@@ -2,11 +2,30 @@ import typing as tp
 import json
 
 
-T = tp.TypeVar('T')
+_T = tp.TypeVar('_T')
+_ITERABLES = [list, tuple, set]
 
-_CONVERTABLE_TYPES = [dict, str, int, float, bool]
 
-def Jsonifable(cls: T) -> T:
+def _to_json(element: _T) -> tp.Dict[str, _T]:
+    if type(element) in [int, str, float, bool]:
+        return element
+    
+    elif type(element) == dict:
+        return {key: _to_json(value) for (key, value) in element.items()}
+
+    elif type(element) in _ITERABLES:
+        return [_to_json(el) for el in element]
+
+    else:
+        obj = {}
+        for var in vars(element):
+            attr = getattr(element, var)
+            obj[var] = _to_json(attr)
+        
+        return obj
+    
+
+def Jsonifable(cls: _T) -> _T:
     """
     ## Jsonifable
     Adds a to_json method to your class, which after being called shall
@@ -31,27 +50,7 @@ def Jsonifable(cls: T) -> T:
 
             for var in vars(self):
                 attr = getattr(self, var)
-
-                if hasattr(attr, 'to_json'):
-                    obj[var] = json.loads(attr.to_json())
-
-                # If an attr is iterable, go through
-                # Every iterable is converted to list
-                elif type(attr) in [list, tuple, set]:
-                    obj[var] = list(attr)
-
-                    for index, element in enumerate(attr):
-                        if hasattr(element, 'to_json'):
-                            obj[var][index] = json.loads(element.to_json())
-                        elif type(element) in _CONVERTABLE_TYPES:
-                            obj[var][index] = element
-                        else:
-                            obj[var][index] = json.loads(to_json(element))
-
-                elif type(attr) in _CONVERTABLE_TYPES:
-                    obj[var] = attr
-                else:
-                    obj[var] = json.loads(to_json(attr))
+                obj[var] = _to_json(attr)
 
             return json.dumps(obj)
 
