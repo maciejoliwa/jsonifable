@@ -4,10 +4,13 @@ import json
 
 _T = tp.TypeVar('_T')
 _ITERABLES = [list, tuple, set]
-_BASIC_TYPES = [int, str, float, bool, None]
+_BASIC_TYPES = [int, str, float, bool]
 
 
 def _to_json(element: _T) -> tp.Dict[str, _T]:
+    if element is None:
+        return None
+    
     if type(element) in _BASIC_TYPES:
         return element
     
