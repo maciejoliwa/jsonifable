@@ -10,10 +10,10 @@ _BASIC_TYPES = [int, str, float, bool]
 def _to_json(element: _T) -> tp.Dict[str, _T]:
     if element is None:
         return None
-    
+
     if type(element) in _BASIC_TYPES:
         return element
-    
+
     elif type(element) == dict:
         return {key: _to_json(value) for (key, value) in element.items()}
 
@@ -25,9 +25,9 @@ def _to_json(element: _T) -> tp.Dict[str, _T]:
         for var in vars(element):
             attr = getattr(element, var)
             obj[var] = _to_json(attr)
-        
+
         return obj
-    
+
 
 def Jsonifable(cls: _T) -> _T:
     """
@@ -43,7 +43,7 @@ def Jsonifable(cls: _T) -> _T:
     ### Returns:
     Decorated class
     """
-    
+
     orign_init = cls.__init__
 
     def __init__(self, *args, **kwargs):
